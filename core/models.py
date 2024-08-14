@@ -4,9 +4,9 @@ from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
 CATEGORY = (
-    ('S', 'Shirt'),
-    ('SP', 'Sport Wear'),
-    ('OW', 'Out Wear')
+    ('S', 'Dals & Pulses'),
+    ('SP', 'Oil & Masala'),
+    ('OW', 'Cereals & Millets')
 )
 
 LABEL = (
@@ -16,7 +16,7 @@ LABEL = (
 
 class Item(models.Model):
     item_name = models.CharField(max_length=100)
-    img = models.ImageField(upload_to="img/%y")
+    # img = models.ImageField(upload_to="media/img/%y")
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
     category = models.CharField(choices=CATEGORY, max_length=2)

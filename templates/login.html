@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+   
+  </form>
+  {% load socialaccount %}
+<p>Google Login</p> 
+<a href="{% provider_login_url 'google' %}?next=/">Login with Google</a>
+{% endblock %}

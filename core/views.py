@@ -13,6 +13,8 @@ from .models import (
     OrderItem,
     CheckoutAddress,
     Payment
+
+    
 )
 
 import stripe
@@ -23,7 +25,10 @@ class HomeView(ListView):
     model = Item
     template_name = "home.html"
 
-
+class LoginView(ListView):
+    model = Item
+    template_name = "login.html"
+    
 class ProductView(DetailView):
     model = Item
     template_name = "product.html"

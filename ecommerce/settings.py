@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+import dj_database_url
+from google.oauth2 import service_account
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +27,7 @@ SECRET_KEY = '@0%m5m+aal2i_^87$adi_2kjnm4*=htv&%kv3qxi*nueni%c1k'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -42,13 +44,34 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
     'django_countries',
     'crispy_forms',
-    
     'core'
 ]
 
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        'APP': {
+            'client_id': '1001257524470-qnq653ekcavc2s4flfc10vb19i2jo10b.apps.googleusercontent.com',
+            'secret': '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',
+            'key': ''
+        },
+        "SCOPE":[
+            "profile",
+            "email"
+        ],
+        "AUTH_PARAMS":{
+            "access_type": "online"
+        },
+
+        'OAUTH_PKCE_ENABLED': True,
+    }
+}
+
+
 MIDDLEWARE = [
+    
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -89,6 +112,23 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'thalaimurai_db_user',
+#         'PASSWORD': 'OpzjCdT5lc0xNsAffhhfVSivqUC5sQ8T',
+#         'HOST': 'dpg-ckfuj2ect0pc73dnls10-a.oregon-postgres.render.com',
+#         'PORT': '5432'
+#     }
+# }
+# DATABASES = {
+#     'default': dj_database_url.config (        
+#         # Feel free to alter this value to suit your needs.        
+#         default='postgres://thalaimurai_db_user:OpzjCdT5lc0xNsAffhhfVSivqUC5sQ8T@dpg-ckfuj2ect0pc73dnls10-a.oregon-postgres.render.com/thalaimurai_db',   
+#         conn_max_age=600 )
+#         }
 
 
 # Password validation
@@ -133,15 +173,27 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'assets')
 
-MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
+# MEDIA_URL = "/media/"
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
+GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
+    os.path.join(BASE_DIR,'credentials.json')
+)
+DEFAULT_FILE_STORAGE = 'storages.backends.gcloud.GoogleCloudStorage'
+# DEFAULT_FILE_STORAGE='ecommerce.gcloud.GoogleCloudMediaFileStorage'
+GS_PROJECT_ID = 'scheduler-261008'
+GS_BUCKET_NAME = 'staging.scheduler-261008.appspot.com'
+MEDIA_ROOT = "media/"
+UPLOAD_ROOT = 'media/uploads/'
+MEDIA_URL = 'https://storage.googleapis.com/{}/'.format(GS_BUCKET_NAME)
 
 # Auth
-AUTHENTICATION_BACKENDS = (
+AUTHENTICATION_BACKENDS = [
+    
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend'
-)
+]
+
 SITE_ID = 1
 
 LOGIN_REDIRECT_URL = '/'
@@ -150,4 +202,12 @@ LOGOUT_REDIRECT_URL = '/'
 
 #stripe payment
 STRIPE_KEY = ''
+
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+
+
+STATICFILES_STORAGE = "storages.backends.gcloud.GoogleCloudStorage"
 

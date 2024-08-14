@@ -3,4 +3,8 @@
   {% csrf_token %}
   {{ form.as_p }}
   <button type="submit">Login</button>
+
 </form>
+{% load socialaccount %}
+<p>Google Login</p> 
+<a href="{% provider_login_url 'google' %}?next=/">Login with Google</a>
