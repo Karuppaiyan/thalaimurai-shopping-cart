@@ -50,24 +50,7 @@ INSTALLED_APPS = [
     'core'
 ]
 
-SOCIALACCOUNT_PROVIDERS = {
-    "google": {
-        'APP': {
-            'client_id': '1001257524470-qnq653ekcavc2s4flfc10vb19i2jo10b.apps.googleusercontent.com',
-            'secret': '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',
-            'key': ''
-        },
-        "SCOPE":[
-            "profile",
-            "email"
-        ],
-        "AUTH_PARAMS":{
-            "access_type": "online"
-        },
 
-        'OAUTH_PKCE_ENABLED': True,
-    }
-}
 
 
 MIDDLEWARE = [
