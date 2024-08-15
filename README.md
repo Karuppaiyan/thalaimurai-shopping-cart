@@ -1,1 +1,1 @@
-DjangoEcommerce
+ecommerce
